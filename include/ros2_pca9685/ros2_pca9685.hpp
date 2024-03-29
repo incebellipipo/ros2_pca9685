@@ -4,7 +4,7 @@
 #include "PiPCA9685/PCA9685.h"
 #include "memory"
 #include "map"
-#include "std_msgs/msg/Float3232.hpp"
+#include "std_msgs/msg/Float32.hpp"
 
 class PWMDriver : public rclcpp::Node
 {
