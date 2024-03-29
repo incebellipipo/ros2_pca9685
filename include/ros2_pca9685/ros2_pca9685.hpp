@@ -4,7 +4,7 @@
 #include "PiPCA9685/PCA9685.h"
 #include "memory"
 #include "map"
-#include "std_msgs/msg/int32.hpp"
+#include "std_msgs/msg/Float3232.hpp"
 
 class PWMDriver : public rclcpp::Node
 {
@@ -15,7 +15,7 @@ private:
 
     std::shared_ptr<PiPCA9685::PCA9685> pca_;
 
-    std::map<int,rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr> subs_;
+    std::map<int,rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr> subs_;
 
     void timer_callback();
 
