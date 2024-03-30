@@ -41,12 +41,11 @@ void PWMDriver::f_param_digest()
     }
 
     for(auto & channel_name : channel_names){
-        std::cout << "channel name: " << channel_name << std::endl;
 
         ChannelConfig channel_config;
         this->get_parameter("channels." + channel_name + ".channel", channel_config.channel);
         this->get_parameter("channels." + channel_name + ".channel_name", channel_config.channel_name);
-        this->get_parameter("channels." + channel_name + ".topic_name", channel_config.topic_name);
+        this->get_parameter("channels." + channel_name + ".topic", channel_config.topic_name);
 
         m_channel_configs.push_back(channel_config);
     }
