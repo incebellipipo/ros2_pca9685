@@ -1,0 +1,10 @@
+ros2_pca9685_node:
+  ros__parameters:
+    frequency: 60.0
+    channels:
+      channel_0:
+        topic: cybership/servo/0
+        channel: 0
+      channel_1:
+        topic: cybership/servo/1
+        channel: 1

@@ -8,7 +8,7 @@ if (NOT TARGET PiPCA9685)
   message(STATUS "${PROJECT_NAME}: `PiPCA9685` targets not found. Attempting to fetch contents...")
   FetchContent_Declare(
     PiPCA9685
-    GIT_REPOSITORY https://github.com/barulicm/PiPCA9685.git
+    GIT_REPOSITORY https://github.com/incebellipipo/PiPCA9685.git
     GIT_TAG        master
   )
   FetchContent_MakeAvailable(PiPCA9685)
@@ -33,7 +33,6 @@ message(STATUS "PiPCA9685_SOURCE_DIR: ${PiPCA9685_SOURCE_DIR}")
 
 include_directories(
   include
-  ${PiPCA9685_SOURCE_DIR}/include
 )
 
 
@@ -67,16 +66,20 @@ target_link_libraries(ros2_pca9685_node
   ros2_pca9685
 )
 
-if(BUILD_TESTING)
-  find_package(ament_lint_auto REQUIRED)
-  # the following line skips the linter which checks for copyrights
-  # comment the line when a copyright and license is added to all source files
-  set(ament_cmake_copyright_FOUND TRUE)
-  # the following line skips cpplint (only works in a git repo)
-  # comment the line when this package is in a git repo and when
-  # a copyright and license is added to all source files
-  set(ament_cmake_cpplint_FOUND TRUE)
-  ament_lint_auto_find_test_dependencies()
-endif()
+install(
+  DIRECTORY
+    launch
+    param
+  DESTINATION
+    share/${PROJECT_NAME}
+)
+
+install(
+  TARGETS
+    ros2_pca9685
+    ros2_pca9685_node
+  DESTINATION
+    lib/${PROJECT_NAME}
+)
 
 ament_package()
