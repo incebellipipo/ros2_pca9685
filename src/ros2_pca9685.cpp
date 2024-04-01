@@ -50,6 +50,10 @@ void PWMDriver::f_param_digest()
         m_channel_configs.push_back(channel_config);
     }
 
-    m_pwm_freq = this->declare_parameter("pwm_freq", 60.0);
+    if(this->has_parameter("frequency")) {
+        this->get_parameter("frequency", m_pwm_freq);
+    } else {
+        m_pwm_freq = 50.0;
+    }
 
 }
