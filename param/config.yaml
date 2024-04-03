@@ -3,8 +3,12 @@ ros2_pca9685_node:
     frequency: 60.0
     channels:
       channel_0:
-        topic: cybership/servo/channel_0
+        pwm_topic: cybership/servo/channel_0/pwm
+        scaled_topic: cybership/servo/channel_0/scaled
         channel: 0
+        center: 1.5 #ms
+        max: 2.0
+        min: 1.0
       channel_1:
-        topic: cybership/servo/channel_1
+        pwm_topic: cybership/servo/channel_1
         channel: 1

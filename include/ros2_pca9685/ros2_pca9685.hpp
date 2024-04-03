@@ -17,8 +17,7 @@ private:
 
     std::shared_ptr<PiPCA9685::PCA9685> m_pca;
 
-    std::map<
-        int,
+    std::vector<
         rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr
     > m_subs;
 
@@ -27,7 +26,11 @@ private:
     struct ChannelConfig {
         int channel;
         std::string channel_name;
-        std::string topic_name;
+        std::string pwm_topic_name;
+        std::string scaled_topic_name;
+        float min;
+        float max;
+        float center;
     };
 
     std::vector<ChannelConfig> m_channel_configs;
@@ -36,9 +39,16 @@ private:
 
     void f_param_digest();
 
+    void f_init_servo(const ChannelConfig *  channel_config);
+
+    void f_filtered_cmd(const ChannelConfig * channel_config, float value);
+
+    void f_pwm_callback(const std_msgs::msg::Float32::SharedPtr msg, ChannelConfig * channel_config);
+
+    void f_scaled_callback(const std_msgs::msg::Float32::SharedPtr msg, ChannelConfig * channel_config);
+
 public:
     PWMDriver();
 
-    void init_servo(int channel, int min, int max);
 
 };
