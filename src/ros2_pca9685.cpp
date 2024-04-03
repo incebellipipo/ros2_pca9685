@@ -88,7 +88,9 @@ void PWMDriver::f_filtered_cmd(const ChannelConfig * channel_config, float value
         value = channel_config->max;
     }
 
-    m_pca->set_pwm_ms(channel_config->channel, value);
+    value = linear_interpolate(value, 1.0, 2.0, 0, 4095);
+
+    m_pca->set_pwm(channel_config->channel, 0, (int)value);
 }
 
 void PWMDriver::f_param_digest()

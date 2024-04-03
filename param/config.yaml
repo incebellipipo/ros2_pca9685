@@ -1,6 +1,6 @@
 ros2_pca9685_node:
   ros__parameters:
-    frequency: 60.0
+    frequency: 50.0
     channels:
       channel_0:
         pwm_topic: cybership/servo/channel_0/pwm
