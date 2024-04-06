@@ -4,16 +4,16 @@ project(ros2_pca9685)
 
 include(FetchContent)
 if (NOT TARGET PiPCA9685)
-  set (PYTHON OFF CACHE INTERNAL "Turn off python for PiPCA9685")
-  message(STATUS "${PROJECT_NAME}: `PiPCA9685` targets not found. Attempting to fetch contents...")
+  set (PYTHON OFF CACHE INTERNAL "Turn off python for PCA9685")
+  message(STATUS "${PROJECT_NAME}: `PCA9685` targets not found. Attempting to fetch contents...")
   FetchContent_Declare(
-    PiPCA9685
-    GIT_REPOSITORY https://github.com/incebellipipo/PiPCA9685.git
+    PCA9685
+    GIT_REPOSITORY https://github.com/incebellipipo/PCA9685.git
     GIT_TAG        master
   )
-  FetchContent_MakeAvailable(PiPCA9685)
+  FetchContent_MakeAvailable(PCA9685)
 else()
-  message(STATUS "PiPCA9685: `PiPCA9685` targets found.")
+  message(STATUS "PCA9685: `PCA9685` targets found.")
 endif()
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
@@ -29,7 +29,7 @@ find_package(std_msgs REQUIRED)
 find_package(geometry_msgs REQUIRED)
 find_package(ros2_control REQUIRED)
 
-message(STATUS "PiPCA9685_SOURCE_DIR: ${PiPCA9685_SOURCE_DIR}")
+message(STATUS "PCA9685_SOURCE_DIR: ${PCA9685_SOURCE_DIR}")
 
 include_directories(
   include
@@ -40,7 +40,7 @@ add_library(ros2_pca9685
   src/ros2_pca9685.cpp
 )
 target_link_libraries(ros2_pca9685
-  PiPCA9685
+  PCA9685
 )
 ament_target_dependencies(ros2_pca9685
   rclcpp

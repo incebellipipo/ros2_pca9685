@@ -11,7 +11,7 @@ PWMDriver::PWMDriver() :
     this->f_param_digest();
 
     // Initialize the PCA9685
-    m_pca = std::make_shared<PiPCA9685::PCA9685>();
+    m_pca = std::make_shared<PCA9685::PCA9685>();
     m_pca->set_pwm_freq(m_pwm_freq);
 
     // Initialize the servos
@@ -67,9 +67,9 @@ void PWMDriver::f_scaled_callback(const std_msgs::msg::Float32::SharedPtr msg, C
     };
 
     if(value > 0.0 ) {
-        value = linear_interpolate(value, 0.0, 1.0, channel_config->center, channel_config->max);
+        value = linear_interpolate(value, channel_config->scale_center, channel_config->scale_max, channel_config->pulse_center, channel_config->pulse_max);
     } else {
-        value = linear_interpolate(value, 0.0, -1.0, channel_config->center, channel_config->min);
+        value = linear_interpolate(value, channel_config->scale_center, channel_config->scale_min, channel_config->pulse_center, channel_config->pulse_min);
     }
 
     this->f_filtered_cmd(channel_config, value);
@@ -82,15 +82,13 @@ void PWMDriver::f_filtered_cmd(const ChannelConfig * channel_config, float value
         RCLCPP_ERROR(this->get_logger(), "Channel not set for %s", channel_config->channel_name.c_str());
         return;
     }
-    if(value < channel_config->min){
-        value = channel_config->min;
-    } else if(value > channel_config->max){
-        value = channel_config->max;
+    if(value < channel_config->pulse_min){
+        value = channel_config->pulse_min;
+    } else if(value > channel_config->pulse_max){
+        value = channel_config->pulse_max;
     }
 
-    value = linear_interpolate(value, 1.0, 2.0, 0, 4095);
-
-    m_pca->set_pwm(channel_config->channel, 0, (int)value);
+    m_pca->set_pwm_ms(channel_config->channel, value);
 }
 
 void PWMDriver::f_param_digest()
@@ -114,9 +112,13 @@ void PWMDriver::f_param_digest()
         this->get_parameter_or<std::string>("channels." + channel_name + ".channel_name", channel_config.channel_name);
         this->get_parameter_or<std::string>("channels." + channel_name + ".pwm_topic", channel_config.pwm_topic_name, std::string("/" + channel_name + "/pwm"));
         this->get_parameter_or<std::string>("channels." + channel_name + ".scaled_topic", channel_config.scaled_topic_name, std::string("/" + channel_name + "/scaled"));
-        this->get_parameter_or<float>("channels." + channel_name + ".center", channel_config.center, 1.5);
-        this->get_parameter_or<float>("channels." + channel_name + ".min", channel_config.min, 1.0);
-        this->get_parameter_or<float>("channels." + channel_name + ".max", channel_config.max, 2.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".pulse_duration.min", channel_config.pulse_min, 1.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".pulse_duration.max", channel_config.pulse_max, 2.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".scale.min", channel_config.scale_min, -1.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".scale.max", channel_config.scale_max, 1.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".pulse_duration.center", channel_config.pulse_center, (channel_config.pulse_min + channel_config.pulse_max) / 2.0);
+        this->get_parameter_or<float>("channels." + channel_name + ".scale.center", channel_config.scale_center, (channel_config.scale_min + channel_config.scale_max) / 2.0);
+
 
         m_channel_configs.push_back(channel_config);
     }
@@ -127,5 +129,5 @@ void PWMDriver::f_param_digest()
 
 void PWMDriver::f_init_servo(const ChannelConfig * channel_config)
 {
-    m_pca->set_pwm_ms(channel_config->channel, channel_config->center);
+    m_pca->set_pwm_ms(channel_config->channel, channel_config->pulse_center);
 }
