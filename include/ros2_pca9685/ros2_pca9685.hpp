@@ -8,14 +8,14 @@
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/float32.hpp"
 
-#include "PiPCA9685/PCA9685.h"
+#include "PCA9685/PCA9685.h"
 
 class PWMDriver : public rclcpp::Node
 {
 
 private:
 
-    std::shared_ptr<PiPCA9685::PCA9685> m_pca;
+    std::shared_ptr<PCA9685::PCA9685> m_pca;
 
     std::vector<
         rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr
@@ -28,9 +28,12 @@ private:
         std::string channel_name;
         std::string pwm_topic_name;
         std::string scaled_topic_name;
-        float min;
-        float max;
-        float center;
+        float pulse_min;
+        float pulse_max;
+        float pulse_center;
+        float scale_min;
+        float scale_max;
+        float scale_center;
     };
 
     std::vector<ChannelConfig> m_channel_configs;
