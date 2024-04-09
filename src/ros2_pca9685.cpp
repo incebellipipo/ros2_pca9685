@@ -88,7 +88,11 @@ void PWMDriver::f_filtered_cmd(const ChannelConfig * channel_config, float value
         value = channel_config->pulse_max;
     }
 
-    m_pca->set_pwm_ms(channel_config->channel, value);
+    try{
+        m_pca->set_pwm_ms(channel_config->channel, value);
+    } catch(std::system_error & e){
+        RCLCPP_ERROR(this->get_logger(), "Error setting PWM for %s: %s", channel_config->channel_name.c_str(), e.what());
+    }
 }
 
 void PWMDriver::f_param_digest()
