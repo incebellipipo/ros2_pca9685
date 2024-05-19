@@ -26,7 +26,7 @@ PWMDriver::PWMDriver() :
             std::placeholders::_1,
             &channel_config);
         auto pwm_sub = this->create_subscription<std_msgs::msg::Float32>(
-            channel_config.pwm_topic_name, 10, [pwm_callback, channel_config](const std_msgs::msg::Float32::SharedPtr msg){
+            channel_config.pwm_topic_name, 1, [pwm_callback, channel_config](const std_msgs::msg::Float32::SharedPtr msg){
                 pwm_callback(msg, &channel_config);
             }
         );
@@ -38,7 +38,7 @@ PWMDriver::PWMDriver() :
             std::placeholders::_1,
             &channel_config);
         auto scaled_sub = this->create_subscription<std_msgs::msg::Float32>(
-            channel_config.scaled_topic_name, 10, [scaled_callback, channel_config](const std_msgs::msg::Float32::SharedPtr msg){
+            channel_config.scaled_topic_name, 1, [scaled_callback, channel_config](const std_msgs::msg::Float32::SharedPtr msg){
                 scaled_callback(msg, &channel_config);
             }
         );
