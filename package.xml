@@ -15,9 +15,6 @@
   <depend>geometry_msgs</depend>
   <depend>ros2_control</depend>
   <depend>rclcpp</depend>
-  <depend>pybind11-dev</depend>
-  <depend>python3-distutils</depend>
-  <depend>python3-dev</depend>
   <depend>libi2c-dev</depend>
 
   <test_depend>ament_lint_auto</test_depend>
